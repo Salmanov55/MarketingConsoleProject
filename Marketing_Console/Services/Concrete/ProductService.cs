@@ -10,37 +10,37 @@ namespace Marketing_Console.Services.Concrete
     {
         private static ProductService classroomService = new ProductService();
 
-        internal static void MenuAddnewproduct()
+        public static void MenuAddNewProduct()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuDeleteProduct()
+        public static void MenuDeleteProduct()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuMakeCorrectionsOnTheProduct()
+        public static void MenuMakeCorrectionsOnTheProduct()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuSearchProductsByName()
+        public static void MenuSearchProductsByName()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuShowAllProducts()
+        public static void MenuShowAllProducts()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuShowProductsByCategory()
+        public static void MenuShowProductsByCategory()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuShowProductsByPriceRange()
+        public static void MenuShowProductsByPriceRange()
         {
             throw new NotImplementedException();
         }
