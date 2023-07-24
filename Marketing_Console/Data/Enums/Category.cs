@@ -8,9 +8,11 @@ namespace Marketing_Console.Data.Enums
 {
     public enum Category
     {
-        Qida,
-        Elektrik,
-        Geyim,
+        Food,
+        Electricity,
+        Clothing,
         Drink,
+        Kitchen,
+        Oil,
     }
 }

@@ -40,25 +40,25 @@ namespace Marketing_Console.Helpers
                 switch (option)
                 {
                     case 1:
-                        ProductService.MenuAddNewProduct();
+                        SubMenuServices.MenuAddNewProduct();
                         break;
                     case 2:
-                        ProductService.MenuMakeCorrectionsOnTheProduct();
+                        SubMenuServices.MenuMakeCorrectionsOnTheProduct();
                         break;
                     case 3:
-                        ProductService.MenuDeleteProduct();
+                        SubMenuServices.MenuDeleteProduct();
                         break;
                     case 4:
-                        ProductService.MenuShowAllProducts();
+                        SubMenuServices.MenuShowAllProducts();
                         break;
                     case 5:
-                        ProductService.MenuShowProductsByCategory();
+                        SubMenuServices.MenuShowProductsByCategory();
                         break;
                     case 6:
-                        ProductService.MenuShowProductsByPriceRange();
+                        SubMenuServices.MenuShowProductsByPriceRange();
                         break;
                     case 7:
-                        ProductService.MenuSearchProductsByName();
+                        SubMenuServices.MenuSearchProductsByName();
                         break;
                     case 0:
                         break;
@@ -99,28 +99,28 @@ namespace Marketing_Console.Helpers
                 switch (option)
                 {
                     case 1:
-                        SaleService.MenuAddNewSales();
+                        SubMenuServices.MenuAddNewSales();
                         break;
                     case 2:
-                        SaleService.MenuReturningAnyProductOnSale();
+                        SubMenuServices.MenuReturningAnyProductOnSale();
                         break;
                     case 3:
-                        SaleService.MenuDeleteSales();
+                        SubMenuServices.MenuDeleteSales();
                         break;
                     case 4:
-                        SaleService.MenuDisplayOfAllSales();
+                        SubMenuServices.MenuDisplayOfAllSales();
                         break;
                     case 5:
-                        SaleService.MenuDisplayOfSalesAccordingGivenDateRange();
+                        SubMenuServices.MenuDisplayOfSalesAccordingGivenDateRange();
                         break;
                     case 6:
-                        SaleService.MenuDisplayOfSalesAccordingGivenAmountRange();
+                        SubMenuServices.MenuDisplayOfSalesAccordingGivenAmountRange();
                         break;
                     case 7:
-                        SaleService.MenuShowingSalesOnGivenDate();
+                        SubMenuServices.MenuShowingSalesOnGivenDate();
                         break;
                     case 8:
-                        SaleService.MenuShowingInformationGivenIDMainlySalesWithThatID();
+                        SubMenuServices.MenuShowingInformationGivenIDMainlySalesWithThatID();
                         break;
                     case 0:
                         break;

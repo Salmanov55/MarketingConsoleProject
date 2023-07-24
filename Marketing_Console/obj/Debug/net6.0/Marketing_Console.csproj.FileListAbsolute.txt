@@ -13,3 +13,5 @@ C:\Users\Aydan\Desktop\Marketing_Console\Marketing_Console\obj\Debug\net6.0\refi
 C:\Users\Aydan\Desktop\Marketing_Console\Marketing_Console\obj\Debug\net6.0\Marketing_Console.pdb
 C:\Users\Aydan\Desktop\Marketing_Console\Marketing_Console\obj\Debug\net6.0\Marketing_Console.genruntimeconfig.cache
 C:\Users\Aydan\Desktop\Marketing_Console\Marketing_Console\obj\Debug\net6.0\ref\Marketing_Console.dll
+C:\Users\Aydan\Desktop\Marketing_Console\Marketing_Console\bin\Debug\net6.0\ConsoleTables.dll
+C:\Users\Aydan\Desktop\Marketing_Console\Marketing_Console\obj\Debug\net6.0\Marketing_Console.csproj.CopyComplete
