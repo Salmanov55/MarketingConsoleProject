@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Marketing_Console.Data.Enums;
+using Marketing_Console.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,81 +10,215 @@ namespace Marketing_Console.Services.Concrete
 {
     public class SubMenuServices
     {
-        private static SubMenuServices marketingServices = new SubMenuServices();
+        private static MarketingServices marketingServices = new MarketingServices();
 
-        internal static void MenuAddNewProduct()
+        public static void AddNewProduct()
+        {
+            try
+            {
+                Console.WriteLine("Please enter name of product:");
+                string productName = Console.ReadLine();
+                Console.WriteLine("Please enter price of product: ");
+                decimal price = Convert.ToDecimal(Console.ReadLine());
+                Console.WriteLine("Please enter count of product:");
+                int count = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Please enter category:");
+                Category category = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
+
+
+                marketingServices.AddProduct(productName, price, category, count);
+                Console.WriteLine("Added new product succesfuly:)");
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Ooops,eror. {ex.Message}");
+            }
+        }
+
+        public static void AddNewSales()
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public static void DeleteProduct()
+        {
+            try
+            {
+                Console.WriteLine("Please enter Product ID:");
+                int id = Convert.ToInt32(Console.ReadLine());
+                marketingServices.DeleteProduct(id);
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Oops,error. {ex.Message}");
+            }
+        }
+
+        public static void DeleteSales()
+        {
+            try
+            {
+                Console.WriteLine("Please enter Sale ID:");
+                int id = Convert.ToInt32(Console.ReadLine());
+                marketingServices.DeleteProduct(id);
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Oops,error. {ex.Message}");
+            }
+        }
+
+        public static void DisplayOfAllSales()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuAddNewSales()
+        public static void DisplayOfSalesAccordingGivenAmountRange()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuDeleteProduct()
+        public static void DisplayOfSalesAccordingGivenDateRange()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuDeleteSales()
+        public static void UpdateProduct()
+        {
+            try
+            {
+                Console.WriteLine("Please enter name of product");
+                string productName = Console.ReadLine();
+                Console.WriteLine("Please enter ID:");
+                int productId = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Please enter count:");
+                int count = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Please enter price:");
+                decimal price = Convert.ToDecimal(Console.ReadLine());
+                Console.WriteLine("Please enter category:");
+                Category category = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
+                marketingServices.UpdateProduct(productId, productName, count, price, category);
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Oops,error. {ex.Message}");
+            }
+        }
+
+        public static void ReturnSale()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuDisplayOfAllSales()
+        public static void SearchProductsByName()
+        {
+            try
+            {
+                Console.WriteLine("Please enter name of product for search:");
+                string name = Console.ReadLine();
+                var foundproducts = marketingServices.FindProductsByName(name);
+
+                if (foundproducts.Count == 0)
+                {
+                    Console.WriteLine("No products found");
+                }
+                foreach (var product in foundproducts)
+                {
+                    Console.WriteLine($"Name:{product.ProductName}");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Oops,error.{ex.Message}");
+            }
+        }
+
+        public static void ShowAllProducts()
+        {
+            var products = marketingServices.ShowAllProducts();
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products yet!");
+                return;
+            }
+            foreach (var product in products)
+            {
+                Console.WriteLine($"ID:{product.Id},Name:{product.ProductName}, Count:{product.ProductCount}, Price:{product.Price}, Category:{product.Category}");
+            }
+        }
+
+        public static void ShowingInformationGivenIDMainlySalesWithThatID()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuDisplayOfSalesAccordingGivenAmountRange()
+        public static void ShowingSalesOnGivenDate()
         {
             throw new NotImplementedException();
         }
 
-        internal static void MenuDisplayOfSalesAccordingGivenDateRange()
+        public static void ShowProductsByCategory()
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Category> categories = new List<Category>();
+                Category category = Category.Food;
+                Console.WriteLine(category);
+                Category category1 = Category.Electricity;
+                Console.WriteLine(category1);
+                Category category2 = Category.Clothing;
+                Console.WriteLine(category2);
+                Category category3 = Category.Drink;
+                Console.WriteLine(category3);
+                Category category4 = Category.Kitchen;
+                Console.WriteLine(category4);
+                Category category5 = Category.Oil;
+                Console.WriteLine(category5);
+                Category category6 = Category.Seafood;
+                Console.WriteLine(category6);
+                Category category9 = Category.Fruits;
+                Console.WriteLine("Please enter category name:");
+                Category cateName = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
+
+                marketingServices.ShowProductsByCategory(cateName);
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Oops,error. {ex.Message}");
+            }
         }
 
-        internal static void MenuMakeCorrectionsOnTheProduct()
+        public static void ShowProductsByPriceRange()
         {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuReturningAnyProductOnSale()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuSearchProductsByName()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuShowAllProducts()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuShowingInformationGivenIDMainlySalesWithThatID()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuShowingSalesOnGivenDate()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuShowProductsByCategory()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void MenuShowProductsByPriceRange()
-        {
-            throw new NotImplementedException();
+            try
+            {
+                Console.WriteLine("Please enter minamount:");
+                decimal minPrice = Convert.ToDecimal(Console.ReadLine());
+                Console.WriteLine("Please enter maxamount:");
+                decimal maxPrice = Convert.ToDecimal(Console.ReadLine());
+                marketingServices.ViewProductsByPrice(minPrice, maxPrice);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ooops,error.{ex.Message}");
+            }
         }
     }
 }

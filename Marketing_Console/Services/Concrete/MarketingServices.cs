@@ -23,12 +23,17 @@ namespace Marketing_Console.Services.Concrete
             sales = new();
             salesItems = new();
         }
-        public void AddProduct(string productName, decimal price, string category)
+        public void AddProduct(string productName, decimal price, Category category, int count)
         {
-            throw new NotImplementedException();
+            if (productName == null) throw new Exception("Name can not be null!");
+            if (price <= 0) throw new Exception("Price ca not be equals to 0 and less than 0");
+            if (count <= 0) throw new Exception("Count can not be equals to 0 and less than 0");
+            if (category == null) throw new Exception("Category can not be null");
+            var product = new Product(productName, price, category, count);
+            products.Add(product);
         }
 
-        public int AddSale(int saleId, List<SalesItem> salesItems)
+        public int AddSale(List<SalesItem> salesItems, double salesAmount)
         {
             throw new NotImplementedException();
         }
@@ -60,31 +65,31 @@ namespace Marketing_Console.Services.Concrete
         }
 
 
-        public List<Product> FindProductsByName(int productId, string productName)
+        public List<Product> FindProductsByName(string productName)
         {
             if (string.IsNullOrWhiteSpace(productName)) throw new Exception("Name can't be empty!");
 
-            var foundStudents = products.Where(x => x.ProductnName.ToLower().Trim() == productName.ToLower().Trim()).ToList();
+            var foundStudents = products.Where(x => x.ProductName.ToLower().Trim() == productName.ToLower().Trim()).ToList();
 
             return foundStudents;
         }
 
-        public void ReturnProduct(int saleId, int productId, int count)
+        public void ReturnSale(int productId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Product> ShowAllProducts(int productId, string productName, string category, int count, decimal price)
+        public List<Product> ShowAllProducts()
         {
             return products;
         }
 
-        public void ShowingSalesByAmountRange(int saleId, decimal price, int productCount, DateTime dateTime, decimal minPrice, decimal maxPrice)
+        public List<SalesItem> ShowingSalesByAmountRange(int saleId, decimal price, int productCount, DateTime dateTime, decimal minPrice, decimal maxPrice)
         {
             throw new NotImplementedException();
         }
 
-        public void ShowingSalesByDateRange(int saleId, decimal price, int productCount, DateTime startDate, DateTime endData)
+        public List<Sale> ShowingSalesByDateRange(int saleId, decimal price, int productCount, DateTime startDate, DateTime endData)
         {
             throw new NotImplementedException();
         }
@@ -94,19 +99,33 @@ namespace Marketing_Console.Services.Concrete
             throw new NotImplementedException();
         }
 
-        public List<Product> ShowProductsByCategory(int productId, string productName, string category, int count, decimal price)
+        public List<Product> ShowProductsByCategory(Category category)
         {
-            throw new NotImplementedException();
+            if (category == null) throw new Exception("Category name can not be null");
+            var foundProducts = products.Where(x => x.Category == category ).ToList();
+            return foundProducts;
         }
 
-        public void UpdateProduct(int productId, string productName, decimal price, string category)
+        public void UpdateProduct(int Id, string productName, int count, decimal price, Category category)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(productName)) throw new Exception("Name can not be null!");
+            if (Id < 0) throw new Exception("ID can not be less than 0");
+            if (count <= 0) throw new Exception("Count can not be equals to 0 and less than 0");
+            if (price <= 0) throw new Exception("Proce can not be equals to 0 and less than 0");
+            if (category == null) throw new Exception("Category can not be null!");
+            var existingproduct = products.FirstOrDefault(x => x.Id == Id);
+            if (existingproduct == null) throw new Exception("Product not found!");
+            existingproduct.Price = price;
+            existingproduct.Category = category;
+            existingproduct.ProductName = productName;
         }
 
         public List<Product> ViewProductsByPrice(decimal minPrice, decimal maxPrice)
         {
-            throw new NotImplementedException();
+            if (minPrice <= 0) throw new ArgumentOutOfRangeException("Price can not be equals to 0 and less than 0");
+            if (maxPrice <= 0) throw new ArgumentOutOfRangeException("Price can not be equals to 0 and less than 0");
+            if (minPrice > maxPrice) throw new ArgumentOutOfRangeException("Mininmum price can not be more than maximum price");
+            return products.Where(x=> x.Price >= minPrice && x.Price <= maxPrice).ToList();
         }
     }
 }

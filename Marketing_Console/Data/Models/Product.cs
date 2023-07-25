@@ -14,7 +14,7 @@ namespace Marketing_Console.Data.Models
 
         public Product(string productName, decimal price, Category category, int productCount)
         {
-            ProductnName = productName;
+            ProductName = productName;
             Price = price;
             Category = category;
             ProductCount = productCount;
@@ -22,10 +22,10 @@ namespace Marketing_Console.Data.Models
             Id = count;
             count++;
         }
-
-        public string ProductnName { get; set; }
+        public string ProductName { get; set; }
         public decimal Price { get; set; }
         public Category Category { get; set; }
         public int ProductCount { get; set; }
+        public object ProductId { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace Marketing_Console.Data.Enums
         Drink,
         Kitchen,
         Oil,
+        Seafood,
+        Fruits,
     }
 }
