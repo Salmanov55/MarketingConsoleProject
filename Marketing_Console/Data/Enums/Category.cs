@@ -9,7 +9,7 @@ namespace Marketing_Console.Data.Enums
     public enum Category
     {
         Food,
-        Electricity,
+        Electronics,
         Clothing,
         Drink,
         Kitchen,

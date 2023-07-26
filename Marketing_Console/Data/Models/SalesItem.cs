@@ -21,5 +21,7 @@ namespace Marketing_Console.Data.Models
 
         public Product Product { get; set; }
         public int Count { get; set; }
+        public int Id { get; set; }
+
     }
 }

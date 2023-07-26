@@ -82,17 +82,41 @@ namespace Marketing_Console.Services.Concrete
 
         public static void DisplayOfAllSales()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static void DisplayOfSalesAccordingGivenAmountRange()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static void DisplayOfSalesAccordingGivenDateRange()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static void UpdateProduct()
@@ -121,7 +145,15 @@ namespace Marketing_Console.Services.Concrete
 
         public static void ReturnSale()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static void SearchProductsByName()
@@ -164,12 +196,28 @@ namespace Marketing_Console.Services.Concrete
 
         public static void ShowingInformationGivenIDMainlySalesWithThatID()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static void ShowingSalesOnGivenDate()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static void ShowProductsByCategory()
@@ -179,7 +227,7 @@ namespace Marketing_Console.Services.Concrete
                 List<Category> categories = new List<Category>();
                 Category category = Category.Food;
                 Console.WriteLine(category);
-                Category category1 = Category.Electricity;
+                Category category1 = Category.Electronics;
                 Console.WriteLine(category1);
                 Category category2 = Category.Clothing;
                 Console.WriteLine(category2);
@@ -195,7 +243,16 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine("Please enter category name:");
                 Category cateName = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
 
-                marketingServices.ShowProductsByCategory(cateName);
+                var foundproducts = marketingServices.ShowProductsByCategory(cateName);
+                if (foundproducts.Count ==0)
+                {
+                    Console.WriteLine("Not product found");
+                    return;
+                }
+                foreach (var product in foundproducts)
+                {
+                    Console.WriteLine($"ID:{product.Id},Name:{product.ProductName}, Count:{product.ProductCount}, Price:{product.Price}, Category:{product.Category}");
+                }
 
             }
             catch (Exception ex)
@@ -213,7 +270,15 @@ namespace Marketing_Console.Services.Concrete
                 decimal minPrice = Convert.ToDecimal(Console.ReadLine());
                 Console.WriteLine("Please enter maxamount:");
                 decimal maxPrice = Convert.ToDecimal(Console.ReadLine());
-                marketingServices.ViewProductsByPrice(minPrice, maxPrice);
+                var foundproduct = marketingServices.ViewProductsByPrice(minPrice, maxPrice);
+                if (foundproduct.Count == 0)
+                {
+                    Console.WriteLine("No products found!");
+                }
+                foreach (var product in foundproduct)
+                {
+                    Console.WriteLine($"ID:{product.Id},Name:{product.ProductName}, Count:{product.ProductCount}, Price:{product.Price}, Category:{product.Category}");
+                }
             }
             catch (Exception ex)
             {
