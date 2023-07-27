@@ -12,7 +12,7 @@ namespace Marketing_Console.Data.Models
     {
         private static int count = 0;
 
-        public Product(string productName, decimal price, Category category, int productCount)
+        public Product(string productName, double price, Category category, int productCount)
         {
             ProductName = productName;
             Price = price;
@@ -23,7 +23,7 @@ namespace Marketing_Console.Data.Models
             count++;
         }
         public string ProductName { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public Category Category { get; set; }
         public int ProductCount { get; set; }
         public object ProductId { get; set; }

@@ -19,7 +19,7 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine("Please enter name of product:");
                 string productName = Console.ReadLine();
                 Console.WriteLine("Please enter price of product: ");
-                decimal price = Convert.ToDecimal(Console.ReadLine());
+                double price = Convert.ToDouble(Console.ReadLine());
                 Console.WriteLine("Please enter count of product:");
                 int count = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Please enter category:");
@@ -32,7 +32,6 @@ namespace Marketing_Console.Services.Concrete
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Ooops,eror. {ex.Message}");
             }
         }
@@ -41,12 +40,45 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
+                int productId;
+                bool choose = true;
 
+                while (choose)
+                {
+                    Console.WriteLine("Enter the Id of the product for sale");
+                    foreach (var item in marketingServices.ShowAllProducts())
+                    {
+                        Console.WriteLine($"{item.Id} - {item.ProductName}");
+
+                    }
+                    int productId = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Enter the number of the product");
+                    int countProduct = Convert.ToInt32(Console.ReadLine());
+
+
+                    Console.WriteLine("Will there be a harvest? Y or N");
+                    string answer = Console.ReadLine();
+
+                    switch (answer)
+                    {
+                        case "Y":
+                            choose = true;
+                            break;
+                         case "N":
+                                choose = false;
+                            break;             
+                        default:
+                            Console.WriteLine("Enter correctly!");
+                            Console.WriteLine("Will there be a harvest? Y or N");
+                            answer = Console.ReadLine();
+                            break;
+                    }
+                }
+                marketingServices.AddSale(ShowAllProducts);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"Ooops,eror. {ex.Message}");
             }
         }
 
@@ -130,7 +162,7 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine("Please enter count:");
                 int count = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Please enter price:");
-                decimal price = Convert.ToDecimal(Console.ReadLine());
+                double price = Convert.ToDouble(Console.ReadLine());
                 Console.WriteLine("Please enter category:");
                 Category category = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
                 marketingServices.UpdateProduct(productId, productName, count, price, category);
@@ -267,9 +299,9 @@ namespace Marketing_Console.Services.Concrete
             try
             {
                 Console.WriteLine("Please enter minamount:");
-                decimal minPrice = Convert.ToDecimal(Console.ReadLine());
+                double minPrice = Convert.ToDouble(Console.ReadLine());
                 Console.WriteLine("Please enter maxamount:");
-                decimal maxPrice = Convert.ToDecimal(Console.ReadLine());
+                double maxPrice = Convert.ToDouble(Console.ReadLine());
                 var foundproduct = marketingServices.ViewProductsByPrice(minPrice, maxPrice);
                 if (foundproduct.Count == 0)
                 {
