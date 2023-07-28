@@ -16,57 +16,103 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
-                Console.WriteLine("Please enter name of product:");
-                string productName = Console.ReadLine();
-                Console.WriteLine("Please enter price of product: ");
-                double price = Convert.ToDouble(Console.ReadLine());
-                Console.WriteLine("Please enter count of product:");
-                int count = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Please enter category:");
-                Category category = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
+                bool choose = true;
 
+                while (choose)
+                {
+                    Console.WriteLine("Please enter name of product:");
+                    string productName = Console.ReadLine();
+                    Console.WriteLine("Please enter price of product: ");
+                    double price = Convert.ToDouble(Console.ReadLine());
+                    Console.WriteLine("Please enter count of product:");
+                    int count = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Please choose and enter one category in list:");
+                    foreach (var item in Enum.GetNames(typeof(Category)))
+                    {
+                        Console.WriteLine($"{item}");
+                    }
+                    Category category = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
 
-                marketingServices.AddProduct(productName, price, category, count);
-                Console.WriteLine("Added new product succesfuly:)");
-
+                    Console.WriteLine("Will there be more fruit? Enter Y or N");
+                    string answer = Console.ReadLine();
+                    switch (answer.ToUpper())
+                    {
+                        case "Y":
+                            choose = true;
+                            break;
+                        case "N":
+                            choose = false;
+                            break;
+                        default:
+                            Console.WriteLine("Enter correctly!");
+                            Console.WriteLine("Will there be a harvest? Y or N");
+                            answer = Console.ReadLine();
+                            break;
+                    }
+                    marketingServices.AddProduct(productName, price, category, count);
+                    Console.WriteLine("Added new product succesfuly:)");
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ooops,eror. {ex.Message}");
             }
         }
-
         public static void AddNewSales()
         {
             try
             {
                 int productId;
+                int prodCount;
                 bool choose = true;
+                List<ProductDto> products = new List<ProductDto>();
 
                 while (choose)
                 {
-                    Console.WriteLine("Enter the Id of the product for sale");
-                    foreach (var item in marketingServices.ShowAllProducts())
+                    foreach (Product item in marketingServices.ShowAllProducts())
                     {
-                        Console.WriteLine($"{item.Id} - {item.ProductName}");
-
+                        if (products != null && products.FirstOrDefault(p => p.Id == item.Id) != null)
+                        {
+                            Console.WriteLine($"{item.Id} - {item.ProductName} : quantity {item.ProductCount - products.FirstOrDefault(p => p.Id == item.Id).Count}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{item.Id} - {item.ProductName} : quantity {item.ProductCount}");
+                        }
                     }
-                    int productId = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Enter the Id of the product for sale");
+                    productId = Convert.ToInt32(Console.ReadLine());
+                    while (marketingServices.ShowAllProducts().FirstOrDefault(p => p.Id == productId) == null)
+                    {
+                        Console.WriteLine("The Id you entered was wrong!");
+                        productId = Convert.ToInt32(Console.ReadLine());
+                    }
                     Console.WriteLine("Enter the number of the product");
-                    int countProduct = Convert.ToInt32(Console.ReadLine());
+                    prodCount = Convert.ToInt32(Console.ReadLine());
+                    if (products.FirstOrDefault(p => p.Id == productId) != null)
+                    {
+                        products.FirstOrDefault(p => p.Id == productId).Count = products.FirstOrDefault(p => p.Id == productId).Count + prodCount;
+                    }
+                    else
+                    {
+                        ProductDto productDto = new()
+                        {
+                            Id = productId,
+                            Count = prodCount,
+                        };
+                        products.Add(productDto);
+                    }
 
-
-                    Console.WriteLine("Will there be a harvest? Y or N");
+                    Console.WriteLine("Will there be more fruit? Enter Y or N");
                     string answer = Console.ReadLine();
-
-                    switch (answer)
+                    switch (answer.ToUpper())
                     {
                         case "Y":
                             choose = true;
                             break;
-                         case "N":
-                                choose = false;
-                            break;             
+                        case "N":
+                            choose = false;
+                            break;
                         default:
                             Console.WriteLine("Enter correctly!");
                             Console.WriteLine("Will there be a harvest? Y or N");
@@ -74,7 +120,7 @@ namespace Marketing_Console.Services.Concrete
                             break;
                     }
                 }
-                marketingServices.AddSale(ShowAllProducts);
+                marketingServices.AddSale(products);
             }
             catch (Exception ex)
             {
@@ -103,25 +149,29 @@ namespace Marketing_Console.Services.Concrete
             {
                 Console.WriteLine("Please enter Sale ID:");
                 int id = Convert.ToInt32(Console.ReadLine());
-                marketingServices.DeleteProduct(id);
+                marketingServices.DeleteSale(id);
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void DisplayOfAllSales()
         {
             try
             {
-
+                foreach (Sale item in marketingServices.DisplayOfAllSales())
+                {
+                    Console.WriteLine($"ID - {item.Id} , Date : {item.Date} , Sales Amount : {item.SalesAmount}");
+                    foreach (SalesItem salesItem in item.SalesItems)
+                    {
+                        Console.WriteLine($"Product : {salesItem.Product.ProductName}, Product Count : {salesItem.Count}, Product Price : {salesItem.Product.Price}");
+                    }
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
 
@@ -166,7 +216,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine("Please enter category:");
                 Category category = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
                 marketingServices.UpdateProduct(productId, productName, count, price, category);
-
             }
             catch (Exception ex)
             {
@@ -271,7 +320,7 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine(category5);
                 Category category6 = Category.Seafood;
                 Console.WriteLine(category6);
-                Category category9 = Category.Fruits;
+                Category category7 = Category.Fruits;
                 Console.WriteLine("Please enter category name:");
                 Category cateName = (Category)Enum.Parse(typeof(Category), Console.ReadLine(), true);
 

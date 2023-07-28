@@ -695,11 +695,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Aydan\\Desktop\\Marketing_Console\\Marketing_Console\\Marketing_Console.csproj",
+      "projectUniqueName": "C:\\Users\\Aydan\\Desktop\\MarketingConsoleProject\\Marketing_Console\\Marketing_Console.csproj",
       "projectName": "Marketing_Console",
-      "projectPath": "C:\\Users\\Aydan\\Desktop\\Marketing_Console\\Marketing_Console\\Marketing_Console.csproj",
+      "projectPath": "C:\\Users\\Aydan\\Desktop\\MarketingConsoleProject\\Marketing_Console\\Marketing_Console.csproj",
       "packagesPath": "C:\\Users\\Aydan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Aydan\\Desktop\\Marketing_Console\\Marketing_Console\\obj\\",
+      "outputPath": "C:\\Users\\Aydan\\Desktop\\MarketingConsoleProject\\Marketing_Console\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Aydan\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,10 +1,12 @@
 ﻿using Marketing_Console.Data.Enums;
 using Marketing_Console.Data.Models;
+using Marketing_Console.Helpers;
 using Marketing_Console.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -25,56 +27,76 @@ namespace Marketing_Console.Services.Concrete
         }
         public void AddProduct(string productName, double price, Category category, int count)
         {
-            if (productName == null) throw new Exception("Name can not be null!");
+            if (string.IsNullOrWhiteSpace(productName)) throw new Exception("Name can not be null!");
             if (price <= 0) throw new Exception("Price ca not be equals to 0 and less than 0");
             if (count <= 0) throw new Exception("Count can not be equals to 0 and less than 0");
             if (category == null) throw new Exception("Category can not be null");
-            var product = new Product(productName, price, category, count);
+            while (products.Any(p => p.ProductName.ToLower().Trim() == productName.ToLower().Trim() && p.Category == category))
+            {
+                Console.WriteLine("Same name of product alredy have! Please enter another name!");
+                productName = Console.ReadLine();
+
+            }
+            var product = new Product(productName.Trim(), price, category, count);
             products.Add(product);
         }
 
-        public void AddSale(int productId)
+        public void AddSale(List<ProductDto> productsDto)
         {
-            foreach (var item in products)
+            List<SalesItem> salesItems = new();
+            foreach (var productDto in productsDto)
             {
-                if (products.Any(p => p.Id == item.Id))
+                Product product = products.FirstOrDefault(p => p.Id == productDto.Id);
+                while (product.ProductCount < productDto.Count)
                 {
-                    Product product = products.FirstOrDefault(p => p.Id == item.Id);
-                    while (product.ProductCount < countProduct)
-                    {
-                        Console.WriteLine("The number of products sent is more than the actual number");
-                        Console.WriteLine("Enter the number again!");
-                        item.countProduct = Convert.ToInt32(Console.ReadLine());
-                    }
+                    Console.WriteLine($"The number of {product.ProductName} sent is more than the actual number");
+                    Console.WriteLine("Enter the number again!");
+                    productDto.Count = Convert.ToInt32(Console.ReadLine());
+                }
 
-                    SalesItem salesItem = new(product, item.CountProduct);
-                    List<SalesItem> salesItems = new();
-                    salesItems.Add(salesItem);
-                    double saleAmount = product.ProductCount * product.Price;
-                    Sale sale = new(saleAmount, salesItems, DateTime.Now);
-                    sales.Add(sale);
-                    Console.WriteLine("The sale was successful");
-                }
-                else
-                {
-                    Console.WriteLine("There are no products with the Id you entered!");
-                }
+                product.ProductCount = product.ProductCount - productDto.Count;
+
+
+                SalesItem salesItem = new(product, productDto.Count);
+                salesItems.Add(salesItem);
+
             }
+
+            Sale sale = new(salesItems.Sum(s => s.TotalPrice()), salesItems, DateTime.Now);
+            sales.Add(sale);
+            Console.WriteLine("The sale was successful");
         }
         public void DeleteProduct(int productId)
         {
             if (productId < 0) throw new ArgumentOutOfRangeException("Id can't be negative!");
-
             var existingStudent = products.FirstOrDefault(x => x.Id == productId);
-
             if (existingStudent == null) throw new Exception("Not found!");
-
-            products = products.Where(x => x.Id != productId).ToList();
+            if (salesItems.Any(s => s.Product.Id == productId))
+            {
+                Console.WriteLine("It is not possible to delete, there is a product with this ID in the sale!");
+                Submenu.ProductSubMenu();
+                return;
+            }
+            else
+            {
+                products = products.Where(x => x.Id != productId).ToList();
+            }
         }
 
-        public void DeleteSale(int productId)
+        public void DeleteSale(int saleId)
         {
-            throw new NotImplementedException();
+            if (sales.FirstOrDefault(s => s.Id == saleId) == null)
+            {
+                Console.WriteLine("You have entered the wrong ID!");
+                Submenu.SaleSubMenu();
+            }
+
+            Sale sale = sales.FirstOrDefault(x => x.Id == saleId);
+            foreach (SalesItem item in sale.SalesItems)
+            {
+                item.Product.ProductCount = item.Product.ProductCount + item.Count;
+            }
+            sales.Remove(sale);
         }
 
         public void DisplayingTheInformationGivenIdSale(int saleId, double price, int productCount, DateTime Date, List<SalesItem> salesItems)
@@ -82,9 +104,9 @@ namespace Marketing_Console.Services.Concrete
             throw new NotImplementedException();
         }
 
-        public void DisplayOfAllSales(int saleId, double price, int productcount, DateTime date)
+        public List<Sale> DisplayOfAllSales()
         {
-            throw new NotImplementedException();
+            return sales;
         }
 
 

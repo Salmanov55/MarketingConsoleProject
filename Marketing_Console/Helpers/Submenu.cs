@@ -17,6 +17,8 @@ namespace Marketing_Console.Helpers
 
             do
             {
+
+                Console.WriteLine("\n");
                 Console.WriteLine("1. Add new product");
                 Console.WriteLine("2. Make corrections on the product");
                 Console.WriteLine("3. Delete product");
@@ -75,6 +77,7 @@ namespace Marketing_Console.Helpers
 
             do
             {
+                Console.WriteLine("\n");
                 Console.WriteLine("1. Add new sales");
                 Console.WriteLine("2. Returning any product on sale");
                 Console.WriteLine("3. Delete sales");
