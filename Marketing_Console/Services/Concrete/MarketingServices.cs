@@ -28,7 +28,7 @@ namespace Marketing_Console.Services.Concrete
         public void AddProduct(string productName, double price, Category category, int count)
         {
             if (string.IsNullOrWhiteSpace(productName)) throw new Exception("Name can not be null!");
-            if (price <= 0) throw new Exception("Price ca not be equals to 0 and less than 0");
+            if (price <= 0) throw new Exception("Price can not be equals to 0 and less than 0");
             if (count <= 0) throw new Exception("Count can not be equals to 0 and less than 0");
             if (category == null) throw new Exception("Category can not be null");
             while (products.Any(p => p.ProductName.ToLower().Trim() == productName.ToLower().Trim() && p.Category == category))
@@ -47,13 +47,6 @@ namespace Marketing_Console.Services.Concrete
             foreach (var productDto in productsDto)
             {
                 Product product = products.FirstOrDefault(p => p.Id == productDto.Id);
-                while (product.ProductCount < productDto.Count)
-                {
-                    Console.WriteLine($"The number of {product.ProductName} sent is more than the actual number");
-                    Console.WriteLine("Enter the number again!");
-                    productDto.Count = Convert.ToInt32(Console.ReadLine());
-                }
-
                 product.ProductCount = product.ProductCount - productDto.Count;
 
 
@@ -65,6 +58,7 @@ namespace Marketing_Console.Services.Concrete
             Sale sale = new(salesItems.Sum(s => s.TotalPrice()), salesItems, DateTime.Now);
             sales.Add(sale);
             Console.WriteLine("The sale was successful");
+            Console.WriteLine("\n");
         }
         public void DeleteProduct(int productId)
         {
@@ -82,7 +76,6 @@ namespace Marketing_Console.Services.Concrete
                 products = products.Where(x => x.Id != productId).ToList();
             }
         }
-
         public void DeleteSale(int saleId)
         {
             if (sales.FirstOrDefault(s => s.Id == saleId) == null)
@@ -99,7 +92,7 @@ namespace Marketing_Console.Services.Concrete
             sales.Remove(sale);
         }
 
-        public void DisplayingTheInformationGivenIdSale(int saleId, double price, int productCount, DateTime Date, List<SalesItem> salesItems)
+        public void DisplayingTheInformationGivenIdSale(int saleId)
         {
             throw new NotImplementedException();
         }
@@ -119,9 +112,67 @@ namespace Marketing_Console.Services.Concrete
             return foundStudents;
         }
 
-        public void ReturnSale(int productId)
+        public void ReturnSale(int saleId)
         {
-            throw new NotImplementedException();
+            int incorrectChoose = 0;
+            Sale sale = sales.FirstOrDefault(s => s.Id == saleId);
+            foreach (SalesItem item in sale.SalesItems)
+            {
+                Console.WriteLine($"Id:{item.Product.Id} , Prodcutin Name : {item.Product.ProductName} , Sale Count: {item.Count}");
+            }
+            Console.WriteLine("Enter the Id of which Product you want to return!");
+            int productId = Convert.ToInt32(Console.ReadLine());
+            while (sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId) == null)
+            {
+                incorrectChoose++;
+                if (incorrectChoose > 3)
+                {
+                    Console.WriteLine("Error record limit exceeded!");
+                    Submenu.SaleSubMenu();
+                    return;
+                }
+                Console.WriteLine("Id entered incorrectly! Make the right choice!");
+                productId = Convert.ToInt32(Console.ReadLine());
+            }
+            incorrectChoose = 0;
+            Console.WriteLine("Enter the Product Name to be returned:");
+            int productCountToReturn = Convert.ToInt32(Console.ReadLine());
+            while (sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId).Count < productCountToReturn)
+            {
+                incorrectChoose++;
+                if (incorrectChoose > 3)
+                {
+                    Console.WriteLine("Error record limit exceeded!");
+                    Submenu.SaleSubMenu();
+                    return;
+                }
+                Console.WriteLine("Enter correctly!");
+                productCountToReturn = Convert.ToInt32(Console.ReadLine());
+            }
+            sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId).Count -= productCountToReturn;
+            Product product = sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId).Product;
+            product.ProductCount += productCountToReturn;
+            sale.SalesAmount -= (product.Price * productCountToReturn);
+            if (sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId).Count == 0 && sale.SalesItems.Count < 2)
+            {
+                sales.Remove(sale);
+                Console.WriteLine("Sale deleted!");
+                Submenu.SaleSubMenu();
+                return;
+            }
+            if (sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId).Count == 0)
+            {
+                sale.SalesItems.Remove(sale.SalesItems.FirstOrDefault(s => s.Product.Id == productId));
+                Console.WriteLine("The products were returned!");
+                Submenu.SaleSubMenu();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("The products were returned!");
+                Submenu.SaleSubMenu();
+                return;
+            }
         }
 
         public List<Product> ShowAllProducts()
@@ -129,12 +180,19 @@ namespace Marketing_Console.Services.Concrete
             return products;
         }
 
-        public List<SalesItem> ShowingSalesByAmountRange(int saleId, double price, int productCount, DateTime dateTime, double minPrice, double maxPrice)
+        public List<Sale> ShowingSalesByAmountRange(double minPrice, double maxPrice)
         {
-            throw new NotImplementedException();
+            if (minPrice > maxPrice)
+            {
+                return sales.Where(s => s.SalesAmount <= minPrice && s.SalesAmount >= maxPrice).ToList();
+            }
+            else
+            {
+                return sales.Where(s => s.SalesAmount >= minPrice && s.SalesAmount <= maxPrice).ToList();
+            }
         }
 
-        public List<Sale> ShowingSalesByDateRange(int saleId, double price, int productCount, DateTime startDate, DateTime endData)
+        public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endData)
         {
             throw new NotImplementedException();
         }

@@ -62,25 +62,29 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
+                if (marketingServices.ShowAllProducts().Count == 0)
+                {
+                    Console.WriteLine("Product is not available in the database!");
+                    return;
+                }
                 int productId;
                 int prodCount;
                 bool choose = true;
                 List<ProductDto> products = new List<ProductDto>();
-
                 while (choose)
                 {
+                    Console.WriteLine("Enter the Id of the product for sale");
                     foreach (Product item in marketingServices.ShowAllProducts())
                     {
                         if (products != null && products.FirstOrDefault(p => p.Id == item.Id) != null)
                         {
-                            Console.WriteLine($"{item.Id} - {item.ProductName} : quantity {item.ProductCount - products.FirstOrDefault(p => p.Id == item.Id).Count}");
+                            Console.WriteLine($"{item.Id} - {item.ProductName} : count {item.ProductCount - products.FirstOrDefault(p => p.Id == item.Id).Count}");
                         }
                         else
                         {
-                            Console.WriteLine($"{item.Id} - {item.ProductName} : quantity {item.ProductCount}");
+                            Console.WriteLine($"{item.Id} - {item.ProductName} : count {item.ProductCount}");
                         }
                     }
-                    Console.WriteLine("Enter the Id of the product for sale");
                     productId = Convert.ToInt32(Console.ReadLine());
                     while (marketingServices.ShowAllProducts().FirstOrDefault(p => p.Id == productId) == null)
                     {
@@ -89,6 +93,14 @@ namespace Marketing_Console.Services.Concrete
                     }
                     Console.WriteLine("Enter the number of the product");
                     prodCount = Convert.ToInt32(Console.ReadLine());
+
+                    while (prodCount > marketingServices.ShowAllProducts().FirstOrDefault(p => p.Id == productId).ProductCount)
+                    {
+                        Console.WriteLine($"The number of {marketingServices.ShowAllProducts().FirstOrDefault(p => p.Id == productId).ProductName} sent is more than the actual number");
+                        Console.WriteLine("Enter the number again!");
+                        prodCount = Convert.ToInt32(Console.ReadLine());
+                    }
+
                     if (products.FirstOrDefault(p => p.Id == productId) != null)
                     {
                         products.FirstOrDefault(p => p.Id == productId).Count = products.FirstOrDefault(p => p.Id == productId).Count + prodCount;
@@ -102,9 +114,13 @@ namespace Marketing_Console.Services.Concrete
                         };
                         products.Add(productDto);
                     }
-
                     Console.WriteLine("Will there be more fruit? Enter Y or N");
                     string answer = Console.ReadLine();
+                    while (answer.ToUpper() != "Y" && answer.ToUpper() != "N")
+                    {
+                        Console.WriteLine("Enter correctly!");
+                        answer = Console.ReadLine();
+                    }
                     switch (answer.ToUpper())
                     {
                         case "Y":
@@ -114,9 +130,6 @@ namespace Marketing_Console.Services.Concrete
                             choose = false;
                             break;
                         default:
-                            Console.WriteLine("Enter correctly!");
-                            Console.WriteLine("Will there be a harvest? Y or N");
-                            answer = Console.ReadLine();
                             break;
                     }
                 }
@@ -127,7 +140,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Ooops,eror. {ex.Message}");
             }
         }
-
         public static void DeleteProduct()
         {
             try
@@ -147,9 +159,16 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
-                Console.WriteLine("Please enter Sale ID:");
-                int id = Convert.ToInt32(Console.ReadLine());
-                marketingServices.DeleteSale(id);
+                if (marketingServices.DisplayOfAllSales().Count > 0)
+                {
+                    Console.WriteLine("Please enter Sale ID:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    marketingServices.DeleteSale(id);
+                }
+                else
+                {
+                    Console.WriteLine("The sales list is empty!");
+                }
             }
             catch (Exception ex)
             {
@@ -160,13 +179,20 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
-                foreach (Sale item in marketingServices.DisplayOfAllSales())
+                if (marketingServices.DisplayOfAllSales().Count > 0)
                 {
-                    Console.WriteLine($"ID - {item.Id} , Date : {item.Date} , Sales Amount : {item.SalesAmount}");
-                    foreach (SalesItem salesItem in item.SalesItems)
+                    foreach (Sale item in marketingServices.DisplayOfAllSales())
                     {
-                        Console.WriteLine($"Product : {salesItem.Product.ProductName}, Product Count : {salesItem.Count}, Product Price : {salesItem.Product.Price}");
+                        Console.WriteLine($"ID - {item.Id} , Date : {item.Date} , Sales Amount : {item.SalesAmount}");
+                        foreach (SalesItem salesItem in item.SalesItems)
+                        {
+                            Console.WriteLine($"Product : {salesItem.Product.ProductName}, Product Count : {salesItem.Count} , Product Price : {salesItem.Product.Price}");
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("The sales list is empty!");
                 }
             }
             catch (Exception ex)
@@ -179,12 +205,25 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
-
+                if (marketingServices.DisplayOfAllSales().Count > 0)
+                {
+                    Console.WriteLine("Enter the minimum price in which range you want to see the sales");
+                    double minPrice = Convert.ToDouble(Console.ReadLine());
+                    Console.WriteLine("Enter the maximum amount");
+                    double maxPrice = Convert.ToDouble(Console.ReadLine());
+                    foreach (Sale item in marketingServices.ShowingSalesByAmountRange(minPrice, maxPrice))
+                    {
+                        Console.WriteLine($"Id:{item.Id}, Amount : {item.SalesAmount} , Date : {item.Date} , Product-Count : {item.SalesItems.Sum(s => s.Count)}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("The sales list is empty!");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
 
@@ -192,15 +231,16 @@ namespace Marketing_Console.Services.Concrete
         {
             try
             {
-
+                Console.WriteLine("Enter start date:");
+                string startDate = Console.ReadLine();
+                Console.WriteLine("Enter Expiry Date:");
+                string endDate = Console.ReadLine();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void UpdateProduct()
         {
             try
@@ -219,21 +259,36 @@ namespace Marketing_Console.Services.Concrete
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void ReturnSale()
         {
             try
             {
-
+                if (marketingServices.DisplayOfAllSales().Count > 0)
+                {
+                    Console.WriteLine("Enter the Id of the required sale!");
+                    foreach (Sale item in marketingServices.DisplayOfAllSales())
+                    {
+                        Console.WriteLine($"Id:{item.Id} ,Date of Sale: {item.Date}, Amount: {item.SalesAmount}");
+                    }
+                    int saleId = Convert.ToInt32(Console.ReadLine());
+                    while (marketingServices.DisplayOfAllSales().FirstOrDefault(s => s.Id == saleId) == null)
+                    {
+                        Console.WriteLine("Wrong Id entered! Try again!");
+                        saleId = Convert.ToInt32(Console.ReadLine());
+                    }
+                    marketingServices.ReturnSale(saleId);
+                }
+                else
+                {
+                    Console.WriteLine("The sales list is empty!");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
 

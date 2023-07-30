@@ -20,12 +20,12 @@ namespace Marketing_Console.Services.Abstract
 
 
         public void AddSale(List<ProductDto> productsDto);
-        public void ReturnSale(int productId);
+        public void ReturnSale(int saleId);
         public void DeleteSale(int productId);
         public List<Sale> DisplayOfAllSales();
-        public List<Sale> ShowingSalesByDateRange(int saleId, double price, int productCount, DateTime startDate, DateTime endData);
-        public List<SalesItem> ShowingSalesByAmountRange(int saleId, double price, int productCount, DateTime dateTime, double minPrice, double maxPrice);
+        public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endData);
+        public List<Sale> ShowingSalesByAmountRange(double minPrice, double maxPrice);
         public void ShowingSalesOnGivenDate(int saleId, double price, DateTime dateTime);
-        public void DisplayingTheInformationGivenIdSale(int saleId, double price, int productCount, DateTime Date, List<SalesItem> salesItems);
+        public void DisplayingTheInformationGivenIdSale(int saleId);
     }
 }
