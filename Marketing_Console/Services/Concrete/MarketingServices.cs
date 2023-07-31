@@ -89,10 +89,23 @@ namespace Marketing_Console.Services.Concrete
             }
             sales.Remove(sale);
         } //Product deletion service
-        public void DisplayingTheInformationGivenIdSale(int saleId)
+        public List<Sale> DisplayingTheInformationGivenIdSale(int saleId)
         {
-            throw new NotImplementedException();
-        }
+            if (saleId < 0)
+            {
+                Console.WriteLine("ID can't be less than 0!");
+                return new List<Sale>();
+            }
+
+            var salesList = sales.Where(sale => sale.Id == saleId).ToList();
+
+            if (salesList.Count == 0)
+            {
+                Console.WriteLine($"No sale found with the given ID: {saleId}");
+            }
+
+            return salesList;
+        } //The given Id mainly shows the amount of the sale, the number of products, and the date
         public List<Sale> DisplayOfAllSales()
         {
             return sales;
@@ -184,15 +197,14 @@ namespace Marketing_Console.Services.Concrete
         } //Service to Display Sales by Amount Range
         public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endDate)
         {
-            if (startDate > endDate) throw new Exception("start date is grater than last date!");
+            if (startDate > endDate) throw new Exception("Min date cannot be greater than the Max date.");
 
-            var result = sales.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-            return result;
+            return sales.Where(s => s.Date >= startDate && s.Date <= endDate).ToList();
         } //Service to Display Sales by Date Range
-        public void ShowingSalesOnGivenDate(DateTime dateTime)
+        public List<Sale> ShowingSalesOnGivenDate(DateTime dateTime)
         {
-            var result = sales.Where(x => x.Date >= dateTime).ToList();
-            return;
+            var salesOnDate = sales.Where(sale => sale.Date.Date == dateTime.Date).ToList();
+            return salesOnDate;
         } //Sales display service for a given date
         public List<Product> ShowProductsByCategory(Category category)
         {
@@ -219,6 +231,6 @@ namespace Marketing_Console.Services.Concrete
             if (maxPrice <= 0) throw new ArgumentOutOfRangeException("Price can not be equals to 0 and less than 0");
             if (minPrice > maxPrice) throw new ArgumentOutOfRangeException("Mininmum price can not be more than maximum price");
             return products.Where(x=> x.Price >= minPrice && x.Price <= maxPrice).ToList();
-        } //product display service by price range
+        } //Product display service by price range
     }
 }

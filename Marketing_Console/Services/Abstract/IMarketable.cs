@@ -26,7 +26,7 @@ namespace Marketing_Console.Services.Abstract
         public List<Sale> DisplayOfAllSales();
         public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endDate);
         public List<Sale> ShowingSalesByAmountRange(double minPrice, double maxPrice);
-        public void ShowingSalesOnGivenDate(DateTime dateTime);
-        public void DisplayingTheInformationGivenIdSale(int saleId);
+        public List<Sale> ShowingSalesOnGivenDate(DateTime dateTime);
+        public List<Sale> DisplayingTheInformationGivenIdSale(int saleId);
     }
 }
