@@ -8,7 +8,6 @@ namespace Marketing_Console
         public static void Main(string[] args)
         {
             int option;
-
             do
             {
                 Console.WriteLine("1. To operate on products");
@@ -21,7 +20,6 @@ namespace Marketing_Console
                     Console.WriteLine("Please, enter a valid option:");
                     Console.WriteLine("------------------------");
                 }
-
                 switch (option)
                 {
                     case 1:
@@ -37,7 +35,6 @@ namespace Marketing_Console
                         Console.WriteLine("No such option!");
                         break;
                 }
-
             } while (option!=0);
         }
     }

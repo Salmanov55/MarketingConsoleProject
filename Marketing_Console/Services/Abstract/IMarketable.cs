@@ -10,6 +10,7 @@ namespace Marketing_Console.Services.Abstract
 {
     public interface IMarketable
     {
+        //Interface of the product class
         public void AddProduct(string productName, double price, Category category, int count);
         public void UpdateProduct(int productId, string productName, int count, double price, Category category);
         public void DeleteProduct(int productId);
@@ -18,14 +19,14 @@ namespace Marketing_Console.Services.Abstract
         public List<Product> ViewProductsByPrice(double minPrice, double maxPrice);
         public List<Product> FindProductsByName(string productName);
 
-
+        //Interface of the sales class
         public void AddSale(List<ProductDto> productsDto);
         public void ReturnSale(int saleId);
         public void DeleteSale(int productId);
         public List<Sale> DisplayOfAllSales();
-        public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endData);
+        public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endDate);
         public List<Sale> ShowingSalesByAmountRange(double minPrice, double maxPrice);
-        public void ShowingSalesOnGivenDate(int saleId, double price, DateTime dateTime);
+        public void ShowingSalesOnGivenDate(DateTime dateTime);
         public void DisplayingTheInformationGivenIdSale(int saleId);
     }
 }

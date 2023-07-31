@@ -11,7 +11,6 @@ namespace Marketing_Console.Data.Models
     public class Product : BaseEntitiy
     {
         private static int count = 0;
-
         public Product(string productName, double price, Category category, int productCount)
         {
             ProductName = productName;

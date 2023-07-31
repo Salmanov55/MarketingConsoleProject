@@ -18,7 +18,6 @@ namespace Marketing_Console.Services.Concrete
         private List<Product> products;
         private List<Sale> sales;
         private List<SalesItem> salesItems;
-
         public MarketingServices() 
         {
             products = new();
@@ -39,8 +38,7 @@ namespace Marketing_Console.Services.Concrete
             }
             var product = new Product(productName.Trim(), price, category, count);
             products.Add(product);
-        }
-
+        } //Product addition service
         public void AddSale(List<ProductDto> productsDto)
         {
             List<SalesItem> salesItems = new();
@@ -59,7 +57,7 @@ namespace Marketing_Console.Services.Concrete
             sales.Add(sale);
             Console.WriteLine("The sale was successful");
             Console.WriteLine("\n");
-        }
+        } //Sales addition service
         public void DeleteProduct(int productId)
         {
             if (productId < 0) throw new ArgumentOutOfRangeException("Id can't be negative!");
@@ -75,7 +73,7 @@ namespace Marketing_Console.Services.Concrete
             {
                 products = products.Where(x => x.Id != productId).ToList();
             }
-        }
+        } //Product deletion service
         public void DeleteSale(int saleId)
         {
             if (sales.FirstOrDefault(s => s.Id == saleId) == null)
@@ -90,28 +88,23 @@ namespace Marketing_Console.Services.Concrete
                 item.Product.ProductCount = item.Product.ProductCount + item.Count;
             }
             sales.Remove(sale);
-        }
-
+        } //Product deletion service
         public void DisplayingTheInformationGivenIdSale(int saleId)
         {
             throw new NotImplementedException();
         }
-
         public List<Sale> DisplayOfAllSales()
         {
             return sales;
-        }
-
-
+        } //All sales display service
         public List<Product> FindProductsByName(string productName)
         {
             if (string.IsNullOrWhiteSpace(productName)) throw new Exception("Name can't be empty!");
 
-            var foundStudents = products.Where(x => x.ProductName.ToLower().Trim() == productName.ToLower().Trim()).ToList();
+            var foundProduct = products.Where(x => x.ProductName.ToLower().Trim() == productName.ToLower().Trim()).ToList();
 
-            return foundStudents;
-        }
-
+            return foundProduct;
+        } //Search service by production name
         public void ReturnSale(int saleId)
         {
             int incorrectChoose = 0;
@@ -173,13 +166,11 @@ namespace Marketing_Console.Services.Concrete
                 Submenu.SaleSubMenu();
                 return;
             }
-        }
-
+        } //Search service by production name
         public List<Product> ShowAllProducts()
         {
             return products;
-        }
-
+        } //All products display service
         public List<Sale> ShowingSalesByAmountRange(double minPrice, double maxPrice)
         {
             if (minPrice > maxPrice)
@@ -190,25 +181,25 @@ namespace Marketing_Console.Services.Concrete
             {
                 return sales.Where(s => s.SalesAmount >= minPrice && s.SalesAmount <= maxPrice).ToList();
             }
-        }
-
-        public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endData)
+        } //Service to Display Sales by Amount Range
+        public List<Sale> ShowingSalesByDateRange(DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
-        }
+            if (startDate > endDate) throw new Exception("start date is grater than last date!");
 
-        public void ShowingSalesOnGivenDate(int saleId, double price, DateTime dateTime)
+            var result = sales.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+            return result;
+        } //Service to Display Sales by Date Range
+        public void ShowingSalesOnGivenDate(DateTime dateTime)
         {
-            throw new NotImplementedException();
-        }
-
+            var result = sales.Where(x => x.Date >= dateTime).ToList();
+            return;
+        } //Sales display service for a given date
         public List<Product> ShowProductsByCategory(Category category)
         {
             if (category == null) throw new Exception("Category name can not be null");
             var foundProducts = products.Where(x => x.Category == category ).ToList();
             return foundProducts;
-        }
-
+        } //Product display service by category
         public void UpdateProduct(int Id, string productName, int count, double price, Category category)
         {
             if (string.IsNullOrWhiteSpace(productName)) throw new Exception("Name can not be null!");
@@ -221,14 +212,13 @@ namespace Marketing_Console.Services.Concrete
             existingproduct.Price = price;
             existingproduct.Category = category;
             existingproduct.ProductName = productName;
-        }
-
+        } //Product update service
         public List<Product> ViewProductsByPrice(double minPrice, double maxPrice)
         {
             if (minPrice <= 0) throw new ArgumentOutOfRangeException("Price can not be equals to 0 and less than 0");
             if (maxPrice <= 0) throw new ArgumentOutOfRangeException("Price can not be equals to 0 and less than 0");
             if (minPrice > maxPrice) throw new ArgumentOutOfRangeException("Mininmum price can not be more than maximum price");
             return products.Where(x=> x.Price >= minPrice && x.Price <= maxPrice).ToList();
-        }
+        } //product display service by price range
     }
 }

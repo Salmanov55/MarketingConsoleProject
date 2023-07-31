@@ -11,13 +11,12 @@ namespace Marketing_Console.Helpers
 {
     public class Submenu
     {
+        //Those in the Product menu
         public static void ProductSubMenu()
         {
             int option;
-
             do
             {
-
                 Console.WriteLine("\n");
                 Console.WriteLine("1. Add new product");
                 Console.WriteLine("2. Make corrections on the product");
@@ -30,7 +29,6 @@ namespace Marketing_Console.Helpers
                 Console.WriteLine("------------------------");
                 Console.WriteLine("Please, select an option:");
                 Console.WriteLine("------------------------");
-
 
                 while (!int.TryParse(Console.ReadLine(), out option))
                 {
@@ -71,10 +69,10 @@ namespace Marketing_Console.Helpers
 
             } while (option != 0);
         }
+        //Those in the Sale menu
         public static void SaleSubMenu()
         {
             int option;
-
             do
             {
                 Console.WriteLine("\n");
@@ -90,7 +88,6 @@ namespace Marketing_Console.Helpers
                 Console.WriteLine("------------------------");
                 Console.WriteLine("Please, select an option:");
                 Console.WriteLine("------------------------");
-
 
                 while (!int.TryParse(Console.ReadLine(), out option))
                 {

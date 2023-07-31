@@ -19,7 +19,6 @@ namespace Marketing_Console.Data.Models
             Id = count;
             count++;
         }
-
         public double SalesAmount { get; set; }
         public List<SalesItem> SalesItems { get; set; }
         public DateTime Date { get; set; }

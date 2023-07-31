@@ -11,7 +11,7 @@ namespace Marketing_Console.Services.Concrete
     public class SubMenuServices
     {
         private static MarketingServices marketingServices = new MarketingServices();
-
+        //SubMenu services
         public static void AddNewProduct()
         {
             try
@@ -154,7 +154,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void DeleteSales()
         {
             try
@@ -200,7 +199,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void DisplayOfSalesAccordingGivenAmountRange()
         {
             try
@@ -226,15 +224,25 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void DisplayOfSalesAccordingGivenDateRange()
         {
             try
             {
-                Console.WriteLine("Enter start date:");
-                string startDate = Console.ReadLine();
-                Console.WriteLine("Enter Expiry Date:");
-                string endDate = Console.ReadLine();
+                if (marketingServices.DisplayOfAllSales().Count > 0)
+                {
+                    Console.WriteLine("Enter the start date");
+                    DateTime startDate = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Enter the end date");
+                    DateTime endDate = Convert.ToDateTime(Console.ReadLine());
+                    foreach (Sale item in marketingServices.ShowingSalesByDateRange(startDate, endDate))
+                    {
+                        Console.WriteLine($"Id:{item.Id}, Amount : {item.SalesAmount} , Date : {item.Date} , Product-Count : {item.SalesItems.Sum(s => s.Count)}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("The sales list is empty!");
+                }
             }
             catch (Exception ex)
             {
@@ -291,7 +299,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void SearchProductsByName()
         {
             try
@@ -315,7 +322,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Oops,error.{ex.Message}");
             }
         }
-
         public static void ShowAllProducts()
         {
             var products = marketingServices.ShowAllProducts();
@@ -329,12 +335,18 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"ID:{product.Id},Name:{product.ProductName}, Count:{product.ProductCount}, Price:{product.Price}, Category:{product.Category}");
             }
         }
-
         public static void ShowingInformationGivenIDMainlySalesWithThatID()
         {
             try
             {
+                //Console.WriteLine("Please enter Id of sale for search:");
+                //int Id = Convert.ToInt32(Console.ReadLine());
+                //var foundsale = marketingServices.DisplayingTheInformationGivenIdSale(Id);
 
+                //foreach (var sales in foundsale)
+                //{
+                //    Console.WriteLine($"Name:{sales.Id}, Price:{sales.salesAmount}, Count:{sales.saleCount}");
+                //}
             }
             catch (Exception)
             {
@@ -342,12 +354,23 @@ namespace Marketing_Console.Services.Concrete
                 throw;
             }
         }
-
         public static void ShowingSalesOnGivenDate()
         {
             try
             {
-
+            //    if (marketingServices.DisplayOfAllSales().Count > 0)
+            //    {
+            //        Console.WriteLine("Enter the date");
+            //        DateTime dateTime = Convert.ToDateTime(Console.ReadLine());
+            //        foreach (Sale item in marketingServices.ShowingSalesOnGivenDate(dateTime))
+            //        {
+            //            Console.WriteLine($"Id:{item.Id}, Amount : {item.SalesAmount} , Date : {item.Date} , Product-Count : {item.SalesItems.Sum(s => s.Count)}");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("The sales list is empty!");
+            //    }
             }
             catch (Exception)
             {
@@ -355,7 +378,6 @@ namespace Marketing_Console.Services.Concrete
                 throw;
             }
         }
-
         public static void ShowProductsByCategory()
         {
             try
@@ -397,7 +419,6 @@ namespace Marketing_Console.Services.Concrete
                 Console.WriteLine($"Oops,error. {ex.Message}");
             }
         }
-
         public static void ShowProductsByPriceRange()
         {
             try
